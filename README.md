@@ -15,34 +15,6 @@ A polished, interactive wall calendar component built with **Next.js 14**, **Typ
 - **Today Indicator** — Current day has an accent dot beneath it
 - **`localStorage` Persistence** — Notes and theme survive page refresh
 
-## 🚀 Running Locally
-
-### Prerequisites
-- Node.js 18+ installed
-- npm or yarn
-
-### Steps
-
-```bash
-# 1. Clone / unzip the project
-cd interactive-calendar
-
-# 2. Install dependencies
-npm install
-
-# 3. Start development server
-npm run dev
-
-# 4. Open in browser
-# http://localhost:3000
-```
-
-### Build for Production
-```bash
-npm run build
-npm start
-```
-
 ## 🛠️ Tech Stack
 
 | Tool | Purpose |
@@ -54,16 +26,6 @@ npm start
 | Unsplash | Hero images (no API key needed) |
 | localStorage | Client-side persistence |
 
-## 📁 Project Structure
-
-```
-src/
-  app/
-    globals.css       # CSS variables, animations, day-cell styles
-    layout.tsx        # Root layout + metadata
-    page.tsx          # Home page
-  components/
-    WallCalendar.tsx  # Main calendar component (all logic + UI)
 ```
 
 ## 🎨 Design Decisions

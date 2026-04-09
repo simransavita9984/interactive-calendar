@@ -2,6 +2,9 @@
 
 A polished, interactive wall calendar component built with **Next.js 14**, **TypeScript**, and **Tailwind CSS**.
 
+## ✨ Live Demo
+
+https://interactive-calendar-six-chi.vercel.app/
 ## ✨ Features
 
 - **Wall Calendar Aesthetic** — Physical calendar design with spiral binding, hanging rings, and paper texture

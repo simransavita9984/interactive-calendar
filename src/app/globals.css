@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #faf6f0;
+  --paper-dark: #f0e8db;
+  --ink: #1a1209;
+  --ink-light: #6b5c44;
+  --accent: #c8432b;
+  --accent-light: #e8856e;
+  --accent-pale: #fde8e3;
+  --gold: #d4a843;
+  --gold-light: #f0d080;
+  --range-bg: #fde8e3;
+  --range-border: #c8432b;
+  --shadow-warm: rgba(100, 60, 20, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #2a1f14;
+  background-image: 
+    radial-gradient(ellipse at 20% 50%, rgba(100,60,20,0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(60,30,10,0.4) 0%, transparent 50%);
+  min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* Calendar paper texture */
+.paper-texture {
+  background-color: var(--paper);
+  background-image: 
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  position: relative;
+}
+
+/* Calendar punch holes */
+.punch-holes::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 24px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 30px,
+    #2a1f14 30px,
+    #2a1f14 50px,
+    transparent 50px
+  );
+  border-radius: 12px;
+  z-index: 10;
+}
+
+/* Day cell hover */
+.day-cell {
+  transition: all 0.15s ease;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+}
+
+.day-cell:hover:not(.disabled):not(.selected-start):not(.selected-end) {
+  background: var(--paper-dark);
+  transform: scale(1.05);
+}
+
+.day-cell.selected-start,
+.day-cell.selected-end {
+  background: var(--accent) !important;
+  color: white !important;
+  border-radius: 50%;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(200, 67, 43, 0.4);
+  transform: scale(1.1);
+  z-index: 2;
+}
+
+.day-cell.in-range {
+  background: var(--accent-pale);
+  color: var(--accent);
+  border-radius: 0;
+}
+
+.day-cell.in-range:first-child,
+.day-cell.range-row-start {
+  border-radius: 50% 0 0 50%;
+}
+
+.day-cell.in-range:last-child,
+.day-cell.range-row-end {
+  border-radius: 0 50% 50% 0;
+}
+
+.day-cell.today:not(.selected-start):not(.selected-end) {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.day-cell.today:not(.selected-start):not(.selected-end)::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.day-cell.disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* Month flip animation */
+@keyframes flipIn {
+  from {
+    opacity: 0;
+    transform: rotateX(-20deg) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: rotateX(0deg) translateY(0);
+  }
+}
+
+@keyframes flipOut {
+  from {
+    opacity: 1;
+    transform: rotateX(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: rotateX(20deg) translateY(10px);
+  }
+}
+
+.calendar-grid-enter {
+  animation: flipIn 0.3s ease forwards;
+  transform-origin: top center;
+}
+
+/* Notes textarea */
+.notes-area {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  background: transparent;
+  resize: none;
+  border: none;
+  outline: none;
+  color: var(--ink);
+  width: 100%;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 31px,
+    rgba(100, 80, 50, 0.12) 31px,
+    rgba(100, 80, 50, 0.12) 32px
+  );
+  background-size: 100% 32px;
+  line-height: 32px;
+  padding-top: 4px;
+}
+
+.notes-area::placeholder {
+  color: var(--ink-light);
+  opacity: 0.6;
+}
+
+/* Hanging string */
+.hanging-string {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(to bottom, #8b6914, #c8a84b);
+  border-radius: 1px;
+}
+
+/* Theme transition */
+.calendar-wrapper {
+  transition: background 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* Scrollbar for notes */
+.notes-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.notes-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.notes-scroll::-webkit-scrollbar-thumb {
+  background: var(--ink-light);
+  opacity: 0.3;
+  border-radius: 2px;
+}
+
+/* Holiday marker */
+.holiday-dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+/* Image overlay gradient */
+.image-overlay {
+  background: linear-gradient(
+    to bottom,
+    transparent 40%,
+    rgba(26, 18, 9, 0.5) 100%
+  );
+}
+
+/* Theme indicator */
+.theme-badge {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .day-cell {
+    font-size: 0.8rem;
+  }
+}
